@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="styles.css">
+
+    <title>New Tab</title>
+
+</head>
+    <body id="content">
+        <!-- <div id="waterMark" style="display: block;">Snake AI by Code Bullet</div> -->
+        <div id="dimScreen" style="display: none;"></div>
+        <div id="addShortcutMenu" style="display: none;">
+            <!-- Shortcuts currently do not work properly. Sorry for the inconvenience. -->
+
+            <span id="addShortcutNameText">Name</span>
+            <br><input id="addShortcutName" type="text" style="width: 270px">
+            <br><br>
+            <span id="addShortcutURLText">URL</span>
+            <br><input id="addShortcutURL" type="text" style="width: 270px" value="http://">
+            <br><br><br>
+            
+            <div class="addShortcutMenuButtons">
+                <button id="cancelShortcut">Cancel</button>
+                <input type="button" id="createShortcut" value="Done">
+            </div>
+        </div>
+        <div id="settingsMenu" style="display: none;">
+            <!-- Sorry, currently settings do not work on Fire Fox. We will try to change this as soon as possible! -->
+            <span style="display: block;"> <!-- remove display:none to show again -->
+                Snake Color: <input id="SnakeColorInput" type="color" value="#009600" style="height:20px">
+                <button id="submitChangeSnakeColor">Change Color</button>
+                <br>
+                <hr>
+                Search Engine: <select value="Google" id="searchEngineSelect">
+                    <option id="googlesearchengine" url="google.com/search">Google</option>
+                    <option id="bingsearchengine" url="bing.com/search">Bing</option>
+                    <option id="yahoo!searchengine" url="search.yahoo.com/search">Yahoo!</option>
+                    <option id="duckduckgosearchengine" url="duckduckgo.com">DuckDuckGo</option>
+                </select>
+
+                <i class="noPersistantCookies">Note: Currently settings doesn't save between browser restarts</i> <br><br>
+                <!-- <br> -->
+                <!-- <hr> -->
+                <!-- Show Watermark: <input id="showWatermark" type="checkbox" checked> -->
+                <!-- <br>
+                Show HUD: <input id="showHUD" type="checkbox" checked> -->
+            </span>
+        </div>
+        <!-- Example url: https://www.google.com/search?q=test -->
+        <form id="search" action="http://google.com/search" method="GET" autocomplete="off" autocapitalize="off">
+            <input name="q" type="text" placeholder="Search the Web" id="searchbar" style="display: none;" class="center-screen">
+        </form>
+
+        <div id="shortcutmenu" class="disable-select"></div>
+
+        <img id="configicon" class="disable-select" src="images/gear.png">
+
+
+
+        <script language="javascript" tyle="text/javascript" src="libraries/jquery-3.6.0.min.js"></script>
+        <script language="javascript" type="text/javascript" src="libraries/p5.js"></script>
+        <script language="javascript" src="libraries/p5.dom.js"></script>
+
+        <script language="javascript" type="text/javascript" src="main.js"></script>
+
+        <script language="javascript" type="text/javascript" src="SnakeGame/Snake.js"></script>
+        <script language="javascript" type="text/javascript" src="SnakeGame/Apple.js"></script>
+        <script language="javascript" type="text/javascript" src="SnakeGame/sketch.js"></script>
+        <!--  <script language="javascript" type="text/javascript" src="SnakeGame/Path.js"></script>-->
+        <script language="javascript" type="text/javascript" src="SnakeGame/HamiltonianCycle.js"></script>
+
+    </body>
+</html>
