@@ -1,0 +1,346 @@
+@font-face {
+    font-family: "Montserrat-Bold";
+    src: url(fonts/montserrat/Montserrat-Bold.ttf);
+}
+
+:root {
+    overflow: hidden;
+    background-color: rgb(20, 20, 20);
+}
+body {
+    font-family: "Montserrat-Bold", sans-serif;
+    font-size: 16px;
+}
+#defaultCanvas0{
+    z-index: -10;
+}
+
+
+::-webkit-scrollbar {
+    display: none;
+    color: rgb(20, 20, 20);
+}
+
+.disable-select {
+    user-select: none; /* supported by Chrome and Opera */
+   -webkit-user-select: none; /* Safari */
+   -khtml-user-select: none; /* Konqueror HTML */
+   -moz-user-select: none; /* Firefox */
+   -ms-user-select: none; /* Internet Explorer/Edge */
+}
+
+.center-screen {
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+#searchbar {
+    text-shadow: 2px 2px rgb(223, 221, 221);
+    box-shadow: 5px 5px 20px rgb(10, 10, 20);
+    z-index: 0;
+    font-family: "Montserrat-Bold", sans-serif;
+    font-size: 15px;
+    
+    width: 40vw;
+    height: 30px;
+    border-radius: 18px;
+    padding: 8px;
+    outline: solid rgb(32, 32, 32);
+    opacity: 0.8;
+    /* height: 7vh; */
+    top: 40%;
+    transform: translateY(-40%);
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+#searchbar:focus {
+    outline: solid rgb(32, 32, 32);
+    opacity: .9;
+}
+
+#searchicon {
+
+}
+
+#shortcutmenu {
+    color: white;
+    align-items: center;
+    text-align: center;
+    width: 40vw;
+    /* height: 100vh; */
+    /* background-color: red; */
+
+    margin: 0;
+    position: absolute;
+
+    top: 50%;
+    /* transform: translateY(-50%); */
+    left: 50%;
+    transform: translateX(-50%);
+    
+    /* margin: 0 auto; */
+
+    display: grid;
+    grid-column-gap: 5px;
+    row-gap: 5px;
+    grid-template-columns: auto auto auto;
+    grid-template-rows: auto auto auto;
+}
+#shortcutmenu.thin {
+    /* background-color: blue; */
+
+    width: 60vw;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 50%;
+    transform: translateX(-50%);
+
+    grid-column-gap: 3px;
+    row-gap: 3px;
+}
+
+#shotcutmenu::before {
+    content: calc(40vw / 200);
+}
+
+#shortcut {
+    box-shadow: 5px 5px 20px rgb(10, 10, 20);
+    text-decoration: none;
+    color: white;
+
+    max-width: 250px;
+    min-width: 100px;
+    /* width: 250px; */
+
+    text-align: center;
+    /* align-items: center; */
+
+    opacity: .6;
+    height: 100px;
+    border-radius: .8em;
+    background-color: rgba(55,56,63,255);
+    /* border: 10px solid rgb(73, 73, 73); */
+}
+#shortcut:hover{
+    opacity: .9;
+    cursor: pointer;
+}
+
+#addshortcut {
+    box-shadow: 5px 5px 20px rgb(10, 10, 20);
+    opacity: .2;
+    max-width: 200px;
+    min-width: 100px;
+
+    color: white;
+    height: 100px;
+    border-radius: 50em;
+    background-color: rgba(55,56,63,255);
+    /* border: 10px solid rgb(241, 241, 241); */
+
+    position: relative;
+}
+#addshortcut:hover {
+    opacity: .6;
+
+    cursor: pointer;
+}
+#shortcutimage {
+    /* margin-top: 10px;
+    height: 30px;c
+    width: 30px;
+
+    top: 50%;
+    transform: translateY(-50%); */
+    /* left: 10%;
+    transform: translateX(0%); */
+    width: 64px;
+    height: 64px;
+    opacity: .5;
+    z-index: -5;
+    /* margin-top: -50%; */
+    /* position: relative; */
+}
+.shortcutTitle {
+    margin-top: -70px;
+    z-index: -4;
+    opacity: .9;
+    color: white;
+}
+.shortcutTitle:hover {
+    opacity: 1;
+}
+
+.addshortcutimage {
+    margin: 0;
+    position: absolute;
+    /* height: 30px; */
+
+    top: 17%;
+    transform: translateY(-17%);
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+#configicon {
+    z-index: 9;
+    opacity: .5;
+    width: 40px;
+    height: 40px;
+
+    margin: 0;
+    position: absolute;
+    top: 93.5%;
+    transform: translateY(-93.5%);
+    left: 99%;
+    transform: translateX(-99%);
+}
+#configicon:hover {
+    opacity: .8;
+    cursor: pointer;
+    /* z-index:2; */
+}
+
+#removeshortcut {
+    /* position: absolute; */
+    top: 93.5%;
+    transform: translateY(-93.5%);
+    left: 40%;
+    transform: translateX(40%);
+}
+#removeshortcut:hover {
+    color: rgb(165, 165, 165);
+    text-decoration: underline;
+}
+
+#settingsMenu {
+    box-shadow: 5px 5px 20px rgb(10, 10, 20);
+    position: absolute;
+
+    z-index: 1000;
+    font-family: "Montserrat-Bold", sans-serif;
+    
+    width: 50vw;
+    height: 45vh;
+    overflow: auto;
+
+    border-radius: 10px;
+    padding: 15px;
+
+    background-color: rgb(40, 40, 45);
+    color: rgb(202, 202, 202);
+
+    top: 30%;
+    transform: translateY(-30%);
+    left: 50%;
+    transform: translateX(-50%);
+}
+#settingsMenu hr {
+    background-color: rgb(128, 128, 128);
+    border: none;
+}
+
+#addShortcutMenu {
+    box-shadow: 5px 5px 20px rgb(10, 10, 20);
+    font-size:medium;
+    position: absolute;
+
+    z-index: 1000;
+    font-family: "Montserrat-Bold", sans-serif;
+    
+    width: 300px;
+    height: 225px;
+    overflow: auto;
+
+    border-radius: 10px;
+    padding: 15px;
+
+    /* outline: solid rgb(114, 114, 114); */
+    background-color: rgb(40, 40, 45);
+    color: rgb(202, 202, 202);
+
+    top: 40%;
+    transform: translateY(-40%);
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+/* #addShortcutName:focus + #addShortcutNameText {
+    color: rgb(138, 180, 248);
+} */
+
+#dimScreen {
+    backdrop-filter: blur(6px);
+    
+    opacity: .8;
+    height: 100vh;
+    width: 100vw;
+
+    color: black;
+    background-color: black;
+
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    z-index: 5;
+}
+
+#shortcutleftarrow {
+    position: absolute;
+    padding-top: 75px;
+
+    float: left;
+    /* left: 10px; */
+
+    padding-left: 10px;
+    opacity: .7;
+}
+
+#shortcutleftarrow:hover {
+    color: rgb(165, 165, 165);
+    text-decoration: underline;
+    opacity: 1;
+}
+
+#shortcutrightarrow {
+    position: absolute;
+    padding-top: 75px;
+    
+    /* float: right; */
+    float: left;
+    padding-left: 30px;
+    
+    /* margin-right: 10px; */
+    opacity: .7;
+}
+
+#shortcutrightarrow:hover {
+    color: rgb(165, 165, 165);
+    text-decoration: underline;
+    opacity: 1;
+}
+
+#waterMark {
+    margin-left: .5%;
+    position: absolute;
+    color: white;
+    z-index: 0;
+    top: 100%;
+    transform: translateY(-100%);
+    opacity: .5;
+}
+
+/* #addShortcutName {
+    color: 138, 180, 248;
+} */
+
+.addShortcutMenuButtons {
+    bottom: 10px;
+    right: 10px;
+    position: absolute;
+}
