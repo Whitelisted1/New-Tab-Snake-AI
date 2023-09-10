@@ -1,5 +1,3 @@
-snakeColor = getSnakeColor();
-
 class Apple {
     constructor(snake) {
         this.x = floor(random(blocksX));
@@ -15,7 +13,7 @@ class Apple {
 
     show() {
         noStroke();
-        fill(snakeColor); // fill(0, 150, 0);
+        fill(snakeColor);
         // fill(100);
         // fill(255, 0, 0);\
         push();

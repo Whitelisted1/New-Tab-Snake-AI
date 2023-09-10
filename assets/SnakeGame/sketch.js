@@ -18,13 +18,37 @@ let speedMultiplier = 1;
 let hc;
 let outlineLength = 3;
 
+// let welcomeText;
 let previousHeadPositions = [];
 
+// function preload() {
+//     welcomeText = loadImage("./SnakeGame/s/welcomeText.png");
+// }
+
+function setup() {
+
+    window.canvas = createCanvas(windowWidth, windowHeight);
+    canvas.position(0, 0);
+    setBlocks();
+    blockSize = min(width / blocksX, height / blocksY);
+    outlineLength = blockSize / 15;
+    xOffset = (width - blockSize * blocksX) / 2.0;
+    yOffset = (height - blockSize * blocksY) / 2.0;
+
+    s = new Snake();
+
+    hc = new HamiltonianCycle(blocksX, blocksY);
+    s.resetOnHamiltonian(hc.cycle);
+    frameRate(30);
+}
 
 function setBlocks() {
+
     let testBlockSize = 1;
     while (true) {
         if (floor(canvas.width / testBlockSize) * floor(canvas.height / testBlockSize) < maxBlocks) {
+
+
             blockSize = testBlockSize;
             blocksX = floor(canvas.width / blockSize) - floor(canvas.width / blockSize) % 2;
             blocksY = floor(canvas.height / blockSize) - floor(canvas.height / blockSize) % 2;
@@ -33,28 +57,9 @@ function setBlocks() {
             testBlockSize++;
         }
     }
-}
-function setup() {
-    window.canvas = createCanvas(windowWidth, windowHeight);
-    canvas.position(0, 0);
-    window.canvas.style('z-index', 1);
-    setBlocks();
-    blockSize = min(width / blocksX, height / blocksY);
-    outlineLength = blockSize / 15;
-    xOffset = (width - blockSize * blocksX) / 2.0;
-    yOffset = (height - blockSize * blocksY) / 2.0;
-    
-    setTimeout(() => {
-        s = new window.Snake();
-        
-        hc = new HamiltonianCycle(blocksX, blocksY);
-        s.resetOnHamiltonian(hc.cycle);
-        frameRate(30);
-    }, 200);
-}
 
-// setTimeout(() => {
 
+}
 
 function resize(){
     resizeCanvas(windowWidth-18, windowHeight);
@@ -64,54 +69,39 @@ function resize(){
     yOffset = (height - blockSize * blocksY) / 2.0;
     
     setup();
-    window.ShowSearchBar();
 }
 
-var doit;
+var resizeDelay; // Don't let the window resize too quickly, wait half a second before resizing
 function windowResized() {
-    clearTimeout(doit);
-    doit = setTimeout(resize, 300);
+    clearTimeout(resizeDelay);
+    resizeDelay = setTimeout(resize, 500);
 }
 
-function pauseUpdateColor() {
-    background(20, 20, 20); // Background Color ( BEHIND window.Snake )
-    
-    fill(20, 20, 20);
-    noStroke();
-    
-    fill(20, 20, 20); // Background Color ( BEHIND window.Snake BACKGROUND COLOR )
-    rect(0, 0, width, yOffset);
-    rect(0, 0, xOffset, height);
-    rect(width, height, -width, -yOffset);
-    rect(width, height, -xOffset, -height);
-    
-    translate(xOffset, yOffset);
-    
-    s.show();
-}
 
 function draw() {
-    if (!pause && s != undefined) {
-        background(20, 20, 20); // Background Color ( BEHIND window.Snake )
-        
+    if (!pause) {
+        background(20);
+
         textAlign(CENTER, CENTER);
-        fill(20, 20, 20);
+        fill(255);
         noStroke();
         textSize(100);
         if (canvas.width > 700) {
-            
-            
+
+
             let newImageWidth = document.width;
             let widthRatio = document.height / document.width;
             
             let newImageHeight = widthRatio;
             newImageWidth *= 0.6;
-            
+            // let widthRatio = newImageWidth / welcomeText.width;
+            // let newImageHeight = welcomeText.height * widthRatio;
+            // image(welcomeText, canvas.width / 2 - newImageWidth / 2, canvas.height / 2 - newImageHeight / 2, newImageWidth, newImageHeight);
             fill(20, 230);
             rect(canvas.width / 2 - newImageWidth / 2, canvas.height / 2 - newImageHeight / 2, newImageWidth, newImageHeight)
         }
-        
-        fill(20); // Border Color
+
+        fill(15);
         rect(0, 0, width, yOffset);
         rect(0, 0, xOffset, height);
         rect(width, height, -width, -yOffset);
@@ -127,17 +117,34 @@ function draw() {
         }
         push();
         translate(xOffset, yOffset);
-        
+
+        // for(let pos of previousHeadPositions){
+        //     fill(20,240);
+        //     stroke(20,60);
+        //     strokeWeight(1);
+        //     rect(pos.x*blockSize,pos.y*blockSize,blockSize,blockSize);
+        // }
+
         fill(0);
         s.show();
         // hc.show();
         for (let i = 0; i < speedMultiplier; i++) {
             s.update();
-            
+            // let headPos = {x:s.x,y:s.y};
+            // let unique = true;
+            // for(let pos of previousHeadPositions){
+            //     if(pos.x ==headPos.x && pos.y ==headPos.y){
+            //         unique=false;
+            //         break;
+            //     }
+            // }
+            // if(unique){
+            //     previousHeadPositions.push(headPos);
+            // }
         }
         pop();
-        
-        
+
+
     }
 }
 
@@ -156,26 +163,22 @@ function keyPressed() {
         //     pause = false;
         //     frameRate(10);
         //     break;
-        // case LEFT_ARROW:
-        //     if(pause) pause=false;
-        //     else pause = true;
-        
+        case 27: // esc key code
+            togglePause(); // from main.js
+            // pause = !pause;
     }
-    // switch (key) {
-        //     case ' ':
-        //         speedMultiplier = 10;
-        //         break;
-        
-        // }
-        
-    }
-    
-    function keyReleased() {
-        // switch (key) {
-            //     case ' ':
-            //         speedMultiplier = 1;
-            // }
-        }
-        
+    switch (key) {
+        case ' ':
+            speedMultiplier = 5;
+            break;
 
-// }, 1000);
+    }
+
+}
+
+function keyReleased() {
+    switch (key) {
+        case ' ':
+            speedMultiplier = 1;
+    }
+}

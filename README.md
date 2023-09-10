@@ -1,9 +1,36 @@
-# New-Tab-Snake-AI
+# New Tab Snake AI
+Description
 
-# How to setup locally on your computer
-1. Download and extract the master github archive
-2. For whichever web browser you are using (chromium or firefox), rename that file to manifest.json (ex. You are using firefox, rename firefox-manifest.json to manifest.json)
-3. Locate main.js in /assets/main.js, then change browserType to the type of webbrowser that you are using "chrome" or "firefox"
-4. You can now install the unpacked extension locally (If you don't know how, there are plenty of tutorials online)
+## Install
+You are able to install this extension through the [Google Web Store](https://chrome.google.com/webstore/detail/new-tab-snake-ai/ngjmagheegdkpejmnmjhpddloimnednh)
 
-* Please note that the actual Snake AI is not created by me, but by Code Bullet (https://thebigcb.com)
+You will soon be able to install the extension through the `Firefox Web Store`
+
+## This extension in action
+<i>Currently Unavailable</i>
+
+## Todo
+* [ ] Shortcuts
+    * [ ] Add a menu when creating the shortcut
+    * [ ] Add drag and drop to sort shortcut order
+    * [ ] Add the ability to change shortcut options (icon, name, delete, url)
+    * [X] Make it so shortcuts sync on different pages
+    * [X] Save order change
+    * [X] Add shortcut base functionality
+* [ ] Add options menu
+    * [ ] Search engine
+        * [ ] Add the ability to have a custom search engine
+    * [ ] Snake color
+    * [ ] Make it so settings sync on different pages
+* [ ] Code cleanliness
+    * [ ] Divide code into different files/sections to avoid making it hard to read
+    * [ ] Add comments to code
+
+* [ ] Create a new preview for the chrome/firefox web store
+* [ ] Use github.io to create an online new tab page (where new tabs go to a specified URL)
+* [X] Autofocus search bar
+* [X] Scrolling shortcuts if there are too many
+* [X] Wait for shortcuts to load before rendering hud to prevent flickering
+
+## Thanks for checking this tool out
+If you do like the extension, consider leaving a star
