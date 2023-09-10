@@ -4,8 +4,10 @@ const thisTabID = getRandomInt(0, Number.MAX_SAFE_INTEGER);
 
 chrome.storage.onChanged.addListener((changes, namespace) => {
     // When "lastChangedBy" was changed by a different tab
-    if ("lastChangedBy" in changes) {
+    if ("lastChangedBy" in changes && changes["lastChangedBy"] != thisTabID) {
         for (let [key, { oldValue, newValue }] of Object.entries(changes)) {
+
+            if (key == "lastChangedBy") continue;
             
             // shortcuts were modified on a different page
             if (key == "shortcuts") {
@@ -95,7 +97,9 @@ async function loadSettings() {
         }
     }
     
-    await storeMultipleDataValues(dataToChange);
+    if (Object.values(Object.keys(dataToChange)).length != 0) {
+        await storeMultipleDataValues(dataToChange);
+    }
 
     // const result = (condition) ? 'value if true' : 'value if false';
     shortcuts = (currentSettings['shortcuts'] != undefined) ? currentSettings['shortcuts'] : dataToChange['shortcuts'];
@@ -131,6 +135,8 @@ function hudReady() {
 }
 
 function drawShortcuts() {
+    if (shortcuts == undefined) return;
+
     shortcutMenu = document.getElementsByClassName("shortcuts")[0];
     shortcutMenu.innerHTML = "";
 
@@ -141,6 +147,7 @@ function drawShortcuts() {
         shortcutElement = document.createElement("a");
         shortcutElement.href = shortcut.url;
         shortcutElement.classList.add("shortcut");
+        shortcutElement.setAttribute("draggable", false);
         shortcutElement.setAttribute("shortcutIndex", i);
         
         titleElement = document.createElement("span");
@@ -194,7 +201,7 @@ function drawShortcuts() {
 
     iconElement = document.createElement("img");
     iconElement.classList.add("addShortcutPlus");
-    iconElement.src = "https://upload.wikimedia.org/wikipedia/commons/9/9e/Plus_symbol.svg";
+    iconElement.src = "images/Plus_symbol.svg";
 
     addShortcutElement.addEventListener("click", async () => {
         shortcutName = window.prompt("Shortcut Name", "");

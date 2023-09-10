@@ -22,15 +22,19 @@ You will soon be able to install the extension through the `Firefox Web Store`
         * [ ] Add the ability to have a custom search engine
     * [ ] Snake color
     * [ ] Make it so settings sync on different pages
+    * [ ] Customizable colors (background, shortcuts, etc)
 * [ ] Code cleanliness
     * [ ] Divide code into different files/sections to avoid making it hard to read
     * [ ] Add comments to code
 
+* [ ] Save website icons for offline use
+* [ ] Get a new icon for the extension
 * [ ] Create a new preview for the chrome/firefox web store
 * [ ] Use github.io to create an online new tab page (where new tabs go to a specified URL)
+* [X] Download assets
 * [X] Autofocus search bar
 * [X] Scrolling shortcuts if there are too many
 * [X] Wait for shortcuts to load before rendering hud to prevent flickering
 
 ## Thanks for checking this tool out
-If you do like the extension, consider leaving a star
+If you like the extension consider leaving a star

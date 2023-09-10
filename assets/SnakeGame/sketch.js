@@ -101,7 +101,7 @@ function draw() {
             rect(canvas.width / 2 - newImageWidth / 2, canvas.height / 2 - newImageHeight / 2, newImageWidth, newImageHeight)
         }
 
-        fill(15);
+        fill(20); // Background color that isn't in the playing area (usually 15)
         rect(0, 0, width, yOffset);
         rect(0, 0, xOffset, height);
         rect(width, height, -width, -yOffset);
@@ -163,13 +163,10 @@ function keyPressed() {
         //     pause = false;
         //     frameRate(10);
         //     break;
-        case 27: // esc key code
-            togglePause(); // from main.js
-            // pause = !pause;
     }
     switch (key) {
         case ' ':
-            speedMultiplier = 5;
+            speedMultiplier = 10;
             break;
 
     }
