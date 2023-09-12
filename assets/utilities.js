@@ -1,3 +1,37 @@
+async function storeData(key, value){
+    if (browser.extension != undefined) {
+        await browser.storage.local.set({[key]: value, "lastChangedBy": thisTabID});
+    } else {
+        // store with cookies
+    }
+}
+
+async function storeMultipleDataValues(dict){
+    dict["lastChangedBy"] = thisTabID;
+    if (browser.extension != undefined) {
+        await browser.storage.local.set(dict);
+    } else {
+        // store with cookies
+    }
+}
+
+async function getData(key){
+    if (browser.extension != undefined) {
+        return Object.values(await browser.storage.local.get(key))[0];
+    } else {
+        // get from cookies
+    }
+}
+
+async function getMultipleDataValues(key){
+    if (browser.extension != undefined) {
+        return await browser.storage.local.get(key);
+    } else {
+        // get from cookies
+        return {};
+    }
+}
+
 function setSnakePaused(snakePaused=false) {
     let canvas = document.getElementById("defaultCanvas0");
 

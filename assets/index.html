@@ -13,16 +13,18 @@
     </head>
     <body>
         <div class="pageContent">
+            <!-- Opacity 0 for load in animation done with js -->
             <div class="hud" style="opacity: 0;">
-
+                
+                <!-- Main options menu  -->
                 <div id="options" class="menu">
                     Snake Color: <input id="snakeColorInput" type="color" value="#009600" style="height:20px">
                     <br>
                     Search Engine: <select value="Google" id="searchEngineSelect">
-                        <option id="googlesearchengine" url="google.com/search">Google</option>
-                        <option id="bingsearchengine" url="bing.com/search">Bing</option>
-                        <option id="yahoo!searchengine" url="search.yahoo.com/search">Yahoo!</option>
-                        <option id="duckduckgosearchengine" url="duckduckgo.com">DuckDuckGo</option>
+                        <option>Google</option>
+                        <option>Bing</option>
+                        <option>Yahoo!</option>
+                        <option>DuckDuckGo</option>
                     </select>
 
                     <br><br>
@@ -38,6 +40,7 @@
                     </ul>
                 </div>
 
+                <!-- Create a shortcut options menu -->
                 <div id="shortcutCreate" class="menu">
                     <h2>Create a Shortcut</h2>
                     <br>
@@ -51,6 +54,10 @@
                     <input id="addShortcutURL" type="text" style="width: 270px" value="http://">
                     <br><br>
 
+                    <!--
+                        https://www.reddit.com/r/ProgrammerHumor/comments/grbdj7/lol_web_devs_go_brrr/
+                        too lazy to fix rn, maybe later
+                    -->
                     <br><br><br>
                     
                     <div class="addShortcutMenuButtons">
@@ -59,14 +66,17 @@
                     </div>
                 </div>
 
+                <!-- Edit a shortcut menu -->
                 <div id="shortcutEdit" class="menu">
                     
                 </div>
 
-                <div class="searchBarHUD">
-                    <input id="searchBoxInput" type="text" placeholder="Search Google or type a URL" autofocus>
-                </div>
+                <!-- Search bar -->
+                <form class="searchBarHUD" method="GET" action="">
+                    <input name="q" id="searchBoxInput" type="text" placeholder="Search a keyword or type a URL" autocomplete="off" autocapitalize="off" autofocus>
+                </form>
 
+                <!-- Shortcuts -->
                 <div id="shortcuts" class="disable-select">
                     <!-- Shortcuts loaded here from js -->
                 </div>
@@ -76,11 +86,18 @@
             </div>
         </div>
 
+        <!-- Extension JS -->
         <script language="javascript" type="text/javascript" src="utilities.js"></script>
         <script language="javascript" type="text/javascript" src="main.js"></script>
         
+        <!-- Libraries -->
         <script language="javascript" type="text/javascript" src="libraries/p5.min.js"></script>
         
+        <!--
+            Code Bullet's JS (modified)
+            Original Versions are available on http://thebigcb.com/
+                as of 2023
+        -->
         <script language="javascript" type="text/javascript" src="SnakeGame/sketch.js"></script>
         <script language="javascript" type="text/javascript" src="SnakeGame/Snake.js"></script>
         <script language="javascript" type="text/javascript" src="SnakeGame/Apple.js"></script>

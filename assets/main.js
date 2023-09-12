@@ -2,8 +2,16 @@ let shortcuts, latestChangedSettingsTabID;
 const browser = chrome;
 const thisTabID = getRandomInt(0, Number.MAX_SAFE_INTEGER);
 
+const searchEngineNameToURL = {
+    "google": "google.com/search",
+    "bing": "bing.com/search",
+    "yahoo!": "search.yahoo.com/search",
+    "duckduckgo": "duckduckgo.com"
+};
+
 let snakeColorInput = document.getElementById("snakeColorInput");
 let searchEngineSelect = document.getElementById("searchEngineSelect");
+let searchBoxInput = document.getElementById("searchBoxInput");
 
 chrome.storage.onChanged.addListener((changes, namespace) => {
     if ("lastChangedBy" in changes) {
@@ -27,6 +35,11 @@ chrome.storage.onChanged.addListener((changes, namespace) => {
                 snakeColorInput.value = rgbToHex(...newValue);
             }
 
+            else if (key == "searchEngine") {
+                searchBoxInput.placeholder = "Search " + newValue + " or type a URL";
+                searchBoxInput.parentElement.setAttribute("action", "http://" + searchEngineNameToURL[newValue.toLowerCase()]);
+            }
+
             console.log(
                 `Storage key "${key}" in namespace "${namespace}" changed.`,
                 `Old value was "${oldValue}", new value is "${newValue}".`
@@ -34,40 +47,6 @@ chrome.storage.onChanged.addListener((changes, namespace) => {
         }
     }
 });
-
-async function storeData(key, value){
-    if (browser.extension != undefined) {
-        await browser.storage.local.set({[key]: value, "lastChangedBy": thisTabID});
-    } else {
-        // store with cookies
-    }
-}
-
-async function storeMultipleDataValues(dict){
-    dict["lastChangedBy"] = thisTabID;
-    if (browser.extension != undefined) {
-        await browser.storage.local.set(dict);
-    } else {
-        // store with cookies
-    }
-}
-
-async function getData(key){
-    if (browser.extension != undefined) {
-        return Object.values(await browser.storage.local.get(key))[0];
-    } else {
-        // get from cookies
-    }
-}
-
-async function getMultipleDataValues(key){
-    if (browser.extension != undefined) {
-        return await browser.storage.local.get(key);
-    } else {
-        // get from cookies
-        return {};
-    }
-}
 
 defaultSettings = {
     shortcuts: [
@@ -87,7 +66,8 @@ defaultSettings = {
             "icon": "https://t0.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&size=256&url=https://stackoverflow.com"
         }
     ],
-    snakeColor: [0, 150, 0]
+    snakeColor: [0, 150, 0],
+    searchEngine: "Google"
 };
 
 async function loadSettings() {
@@ -109,9 +89,15 @@ async function loadSettings() {
     }
 
     shortcuts = (currentSettings['shortcuts'] != undefined) ? currentSettings['shortcuts'] : defaultSettings['shortcuts'];
-    window.snakeColor = (currentSettings['snakeColor'] != undefined) ? currentSettings['snakeColor'] : defaultSettings['snakeColor'];
 
+    window.snakeColor = (currentSettings['snakeColor'] != undefined) ? currentSettings['snakeColor'] : defaultSettings['snakeColor'];
     snakeColorInput.value = rgbToHex(...window.snakeColor);
+
+    searchEngine = (currentSettings['searchEngine'] != undefined) ? currentSettings['searchEngine'] : defaultSettings['searchEngine'];
+    searchEngineSelect.value = searchEngine;
+    searchBoxInput.placeholder = "Search " + searchEngine + " or type a URL";
+    searchBoxInput.parentElement.setAttribute("action", "http://" + searchEngineNameToURL[searchEngine.toLowerCase()]);
+    
 
     console.log(window.snakeColor);
     console.log(shortcuts);
@@ -208,7 +194,6 @@ loadSettings();
 settingsButton = document.getElementById("settingsIcon");
 settingsMenu = document.getElementById("options");
 settingsButton.addEventListener("click", () => {
-    
     if (settingsMenu.classList.contains("active")) {
         settingsMenu.classList.remove("active");
         setSnakePaused(false);
@@ -258,14 +243,22 @@ document.getElementById("cancelShortcut").addEventListener("click", () => {
 });
 
 document.getElementById("changeSettings").addEventListener("click", async (e) => {
+    let searchEngine, snakeColor
+
     snakeColor = snakeColorInput.value;
     snakeColor = [parseInt(snakeColor.substr(1,2), 16), parseInt(snakeColor.substr(3,2), 16), parseInt(snakeColor.substr(5,2), 16)];
+
     searchEngine = searchEngineSelect.value;
+    searchEngineURL = searchEngineNameToURL[searchEngine.toLowerCase()];
+
+    searchBoxInput.placeholder = "Search " + searchEngine + " or type a URL";
+    searchBoxInput.parentElement.setAttribute("action", "http://" + searchEngineURL);
 
     window.snakeColor = [...snakeColor];
     console.log(snakeColor, searchEngine);
 
     await storeMultipleDataValues({
-        "snakeColor": snakeColor
+        "snakeColor": snakeColor,
+        "searchEngine": searchEngine
     });
 });

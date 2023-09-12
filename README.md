@@ -20,7 +20,7 @@ You will soon be able to install the extension through the `Firefox Web Store`
     * [X] Add shortcut base functionality
 * [ ] Add options menu
     * [ ] Search engine
-        * [ ] Preset search engines
+        * [X] Preset search engines
         * [ ] Add the ability to have a custom search engine
     * [X] Snake color
     * [X] Make it so settings sync on different pages
