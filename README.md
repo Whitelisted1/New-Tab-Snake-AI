@@ -11,7 +11,7 @@ You will soon be able to install the extension through the `Firefox Web Store`
 
 ## Todo
 * [ ] Shortcuts
-    * [ ] Add a menu when creating the shortcut
+    * [X] Add a menu when creating the shortcut
     * [ ] Add drag and drop to sort shortcut order
     * [ ] Add the ability to change shortcut options (icon, name, delete, url)
     * [X] Make it so shortcuts sync on different pages
