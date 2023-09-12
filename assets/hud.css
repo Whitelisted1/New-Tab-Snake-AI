@@ -59,11 +59,11 @@
     opacity: 1;
 }
 
-.shortcuts::-webkit-scrollbar {
+#shortcuts::-webkit-scrollbar {
     display: none;
 }
 
-.shortcuts {
+#shortcuts {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
@@ -156,7 +156,7 @@
     text-decoration: underline;
 }
 
-.settingsIcon {
+#settingsIcon {
     position: absolute;
     bottom: 15px;
     right: 15px;
@@ -170,7 +170,7 @@
     transition: opacity 250ms, transform 500ms;
 }
 
-.settingsIcon:hover {
+#settingsIcon:hover {
     cursor: pointer;
     opacity: .8;
     transform: rotate(120deg);
@@ -214,4 +214,16 @@
     visibility: visible;
     transform: translate(-50%, -50%);
     opacity: 1;
+}
+
+#shortcutCreate {
+    /* width: 50%; */
+    max-width: 350px;
+    max-height: 275px;
+}
+
+.addShortcutMenuButtons {
+    position: absolute;
+    bottom: 15px;
+    left: 20px;
 }

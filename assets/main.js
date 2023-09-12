@@ -1,10 +1,14 @@
-let shortcuts;
+let shortcuts, latestChangedSettingsTabID;
 const browser = chrome;
 const thisTabID = getRandomInt(0, Number.MAX_SAFE_INTEGER);
 
 chrome.storage.onChanged.addListener((changes, namespace) => {
+    if ("lastChangedBy" in changes) {
+        latestChangedSettingsTabID = changes["lastChangedBy"]["newValue"];
+    }
+
     // When "lastChangedBy" was changed by a different tab
-    if ("lastChangedBy" in changes && changes["lastChangedBy"] != thisTabID) {
+    if (latestChangedSettingsTabID != thisTabID) {
         for (let [key, { oldValue, newValue }] of Object.entries(changes)) {
 
             if (key == "lastChangedBy") continue;
@@ -137,7 +141,7 @@ function hudReady() {
 function drawShortcuts() {
     if (shortcuts == undefined) return;
 
-    shortcutMenu = document.getElementsByClassName("shortcuts")[0];
+    shortcutMenu = document.getElementById("shortcuts");
     shortcutMenu.innerHTML = "";
 
     for (var i = 0; i < shortcuts.length; i++) {
@@ -183,7 +187,7 @@ function drawShortcuts() {
 
             arrowElementR.addEventListener("click", async (e) => {
                 e.preventDefault();
-                shortcutIndex = e.target.parentElement.getAttribute("shortcutIndex");
+                shortcutIndex = parseInt(e.target.parentElement.getAttribute("shortcutIndex"));
                 arrayMove(shortcuts, shortcutIndex, shortcutIndex+1);
                 await storeData("shortcuts", shortcuts);
                 drawShortcuts();
@@ -204,17 +208,22 @@ function drawShortcuts() {
     iconElement.src = "images/Plus_symbol.svg";
 
     addShortcutElement.addEventListener("click", async () => {
-        shortcutName = window.prompt("Shortcut Name", "");
-        shortcutURL = window.prompt("Shortcut URL", "https://");
+        shortcutCreateMenu = document.getElementById("shortcutCreate");
 
-        shortcuts.push({
-            "title": shortcutName,
-            "url": shortcutURL,
-            "icon": "https://t0.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&size=256&url=" + shortcutURL
-        });
+        shortcutCreateMenu.classList.add("active");
+        setSnakePaused(true);
+        
+        // shortcutName = window.prompt("Shortcut Name", "");
+        // shortcutURL = window.prompt("Shortcut URL", "https://");
 
-        await storeData("shortcuts", shortcuts);
-        drawShortcuts();
+        // shortcuts.push({
+        //     "title": shortcutName,
+        //     "url": shortcutURL,
+        //     "icon": "https://t0.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&size=256&url=" + shortcutURL
+        // });
+
+        // await storeData("shortcuts", shortcuts);
+        // drawShortcuts();
     });
 
     addShortcutElement.appendChild(iconElement);
@@ -223,8 +232,8 @@ function drawShortcuts() {
 
 loadSettings();
 
-settingsButton = document.getElementsByClassName("settingsIcon")[0];
-settingsMenu = document.getElementsByClassName("options")[0];
+settingsButton = document.getElementById("settingsIcon");
+settingsMenu = document.getElementById("options");
 settingsButton.addEventListener("click", () => {
     
     if (settingsMenu.classList.contains("active")) {
@@ -240,4 +249,37 @@ settingsButton.addEventListener("click", () => {
 document.getElementById("resetSettings").addEventListener("click", async () => {
     browser.storage.local.clear();
     await loadSettings();
+});
+
+document.getElementById("createShortcut").addEventListener("click", async () => {
+    let shortcutURLInput, shortcutNameInput, shortcutURL, shortcutName;
+
+    setSnakePaused(false);
+
+    shortcutURLInput = document.getElementById("addShortcutURL");
+    shortcutURL = shortcutURLInput.value;
+    shortcutURLInput.value = "http://";
+
+    shortcutNameInput = document.getElementById("addShortcutName");
+    shortcutName = shortcutNameInput.value;
+    shortcutNameInput.value = "";
+
+
+    document.getElementById("shortcutCreate").classList.remove("active");
+
+    shortcuts.push({
+        "title": shortcutName,
+        "url": shortcutURL,
+        "icon": "https://t0.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&size=256&url=" + shortcutURL
+    });
+
+    await storeData("shortcuts", shortcuts);
+    drawShortcuts();
+});
+
+document.getElementById("cancelShortcut").addEventListener("click", () => {
+    setSnakePaused(false);
+    document.getElementById("addShortcutURL").value = "http://";
+    document.getElementById("addShortcutName").value = "";
+    document.getElementById("shortcutCreate").classList.remove("active");
 });

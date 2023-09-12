@@ -15,7 +15,7 @@
         <div class="pageContent">
             <div class="hud" style="opacity: 0;">
 
-                <div class="menu options">
+                <div id="options" class="menu">
                     Snake Color: <input id="SnakeColorInput" type="color" value="#009600" style="height:20px">
                     <br>
                     Search Engine: <select value="Google" id="searchEngineSelect">
@@ -25,7 +25,7 @@
                         <option id="duckduckgosearchengine" url="duckduckgo.com">DuckDuckGo</option>
                     </select>
 
-                    <br>
+                    <br><br>
                     <button id="changeSettings">Save Settings</button> <button id="resetSettings">Clear ALL data (including shortcuts)</button>
 
                     <br><br>
@@ -38,23 +38,40 @@
                     </ul>
                 </div>
 
-                <div class="menu shortcutCreate">
+                <div id="shortcutCreate" class="menu">
+                    <h2>Create a Shortcut</h2>
+                    <br>
+                    <label for="addShortcutName">Name</label>
+                    <br>
+                    <input id="addShortcutName" type="text" style="width: 270px">
+                    <br><br>
+                    
+                    <label for="addShortcutURL">URL</label>
+                    <br>
+                    <input id="addShortcutURL" type="text" style="width: 270px" value="http://">
+                    <br><br>
 
+                    <br><br><br>
+                    
+                    <div class="addShortcutMenuButtons">
+                        <button id="cancelShortcut">Cancel</button>
+                        <button id="createShortcut">Done</button>
+                    </div>
                 </div>
 
-                <div class="menu shortcutEdit">
-
+                <div id="shortcutEdit" class="menu">
+                    
                 </div>
 
                 <div class="searchBarHUD">
                     <input id="searchBoxInput" type="text" placeholder="Search Google or type a URL" autofocus>
                 </div>
 
-                <div class="shortcuts disable-select">
-
+                <div id="shortcuts" class="disable-select">
+                    <!-- Shortcuts loaded here from js -->
                 </div>
     
-                <img class="settingsIcon disable-select" src="images/Settings-icon-symbol-vector.png">
+                <img id="settingsIcon" class="disable-select" src="images/Settings-icon-symbol-vector.png">
 
             </div>
         </div>
