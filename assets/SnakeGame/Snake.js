@@ -1,5 +1,3 @@
-let snakeColor = [0, 150, 150];
-
 class Snake {
     constructor() {
         this.x = floor(blocksX / 2);
@@ -45,7 +43,7 @@ class Snake {
     show() {
         noStroke();
 
-        fill(snakeColor);
+        fill(window.snakeColor);
 
         // this.survivalMode ? fill(200, 0, 0, 200) : fill(0, 200, 0);
         noStroke();

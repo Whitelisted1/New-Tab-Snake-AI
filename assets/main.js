@@ -2,6 +2,9 @@ let shortcuts, latestChangedSettingsTabID;
 const browser = chrome;
 const thisTabID = getRandomInt(0, Number.MAX_SAFE_INTEGER);
 
+let snakeColorInput = document.getElementById("snakeColorInput");
+let searchEngineSelect = document.getElementById("searchEngineSelect");
+
 chrome.storage.onChanged.addListener((changes, namespace) => {
     if ("lastChangedBy" in changes) {
         latestChangedSettingsTabID = changes["lastChangedBy"]["newValue"];
@@ -19,6 +22,11 @@ chrome.storage.onChanged.addListener((changes, namespace) => {
                 drawShortcuts();
             }
 
+            else if (key == "snakeColor") {
+                window.snakeColor = newValue;
+                snakeColorInput.value = rgbToHex(...newValue);
+            }
+
             console.log(
                 `Storage key "${key}" in namespace "${namespace}" changed.`,
                 `Old value was "${oldValue}", new value is "${newValue}".`
@@ -26,12 +34,6 @@ chrome.storage.onChanged.addListener((changes, namespace) => {
         }
     }
 });
-
-function getRandomInt(min, max) {
-    min = Math.ceil(min);
-    max = Math.floor(max);
-    return Math.floor(Math.random() * (max - min) + min); // The maximum is exclusive and the minimum is inclusive
-}
 
 async function storeData(key, value){
     if (browser.extension != undefined) {
@@ -84,7 +86,8 @@ defaultSettings = {
             "url": "https://stackoverflow.com",
             "icon": "https://t0.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&size=256&url=https://stackoverflow.com"
         }
-    ]
+    ],
+    snakeColor: [0, 150, 0]
 };
 
 async function loadSettings() {
@@ -93,9 +96,9 @@ async function loadSettings() {
     currentSettings = await getMultipleDataValues(defaultSettingsKeys);
     dataToChange = { };
     
+    console.log(currentSettings);
     for (var i = 0; i < defaultSettingsKeys.length; i++) {
         thisSetting = defaultSettingsKeys[i];
-        console.log(currentSettings);
         if (currentSettings[thisSetting] == undefined) {
             dataToChange[thisSetting] = defaultSettings[thisSetting];
         }
@@ -105,34 +108,16 @@ async function loadSettings() {
         await storeMultipleDataValues(dataToChange);
     }
 
-    // const result = (condition) ? 'value if true' : 'value if false';
-    shortcuts = (currentSettings['shortcuts'] != undefined) ? currentSettings['shortcuts'] : dataToChange['shortcuts'];
+    shortcuts = (currentSettings['shortcuts'] != undefined) ? currentSettings['shortcuts'] : defaultSettings['shortcuts'];
+    window.snakeColor = (currentSettings['snakeColor'] != undefined) ? currentSettings['snakeColor'] : defaultSettings['snakeColor'];
 
+    snakeColorInput.value = rgbToHex(...window.snakeColor);
+
+    console.log(window.snakeColor);
     console.log(shortcuts);
     drawShortcuts();
     hudReady();
 } 
-
-function setSnakePaused(snakePaused=false) {
-    let canvas = document.getElementById("defaultCanvas0");
-
-    pause = snakePaused; // pause var is used by SnakeGame
-    if (snakePaused) {
-        canvas.style.opacity = ".6";
-        canvas.style.filter = "blur(6px)";
-    }
-    else {
-        canvas.style.opacity = "1";
-        canvas.style.filter = "none";
-    }
-}
-
-// https://stackoverflow.com/questions/5306680/move-an-array-element-from-one-array-position-to-another
-function arrayMove(arr, fromIndex, toIndex) {
-    var element = arr[fromIndex];
-    arr.splice(fromIndex, 1);
-    arr.splice(toIndex, 0, element);
-}
 
 function hudReady() {
     document.getElementsByClassName("hud")[0].style.opacity = "1";
@@ -212,18 +197,6 @@ function drawShortcuts() {
 
         shortcutCreateMenu.classList.add("active");
         setSnakePaused(true);
-        
-        // shortcutName = window.prompt("Shortcut Name", "");
-        // shortcutURL = window.prompt("Shortcut URL", "https://");
-
-        // shortcuts.push({
-        //     "title": shortcutName,
-        //     "url": shortcutURL,
-        //     "icon": "https://t0.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&size=256&url=" + shortcutURL
-        // });
-
-        // await storeData("shortcuts", shortcuts);
-        // drawShortcuts();
     });
 
     addShortcutElement.appendChild(iconElement);
@@ -282,4 +255,17 @@ document.getElementById("cancelShortcut").addEventListener("click", () => {
     document.getElementById("addShortcutURL").value = "http://";
     document.getElementById("addShortcutName").value = "";
     document.getElementById("shortcutCreate").classList.remove("active");
+});
+
+document.getElementById("changeSettings").addEventListener("click", async (e) => {
+    snakeColor = snakeColorInput.value;
+    snakeColor = [parseInt(snakeColor.substr(1,2), 16), parseInt(snakeColor.substr(3,2), 16), parseInt(snakeColor.substr(5,2), 16)];
+    searchEngine = searchEngineSelect.value;
+
+    window.snakeColor = [...snakeColor];
+    console.log(snakeColor, searchEngine);
+
+    await storeMultipleDataValues({
+        "snakeColor": snakeColor
+    });
 });

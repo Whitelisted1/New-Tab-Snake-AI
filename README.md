@@ -20,8 +20,8 @@ You will soon be able to install the extension through the `Firefox Web Store`
 * [ ] Add options menu
     * [ ] Search engine
         * [ ] Add the ability to have a custom search engine
-    * [ ] Snake color
-    * [ ] Make it so settings sync on different pages
+    * [X] Snake color
+    * [X] Make it so settings sync on different pages
     * [ ] Customizable colors (background, shortcuts, etc)
 * [ ] Code cleanliness
     * [ ] Divide code into different files/sections to avoid making it hard to read

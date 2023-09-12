@@ -107,6 +107,7 @@
 
 .shortcut > .title {
     max-width: calc(100% - 30px);
+    height: 23px;
     overflow: hidden;
 }
 
