@@ -223,6 +223,15 @@
     max-height: 275px;
 }
 
+.option {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.sources {
+    margin-top: 30px;
+}
+
 .addShortcutMenuButtons {
     position: absolute;
     bottom: 15px;

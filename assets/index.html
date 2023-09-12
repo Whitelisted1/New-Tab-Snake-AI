@@ -18,32 +18,36 @@
                 
                 <!-- Main options menu  -->
                 <div id="options" class="menu">
-                    Snake Color: <input id="snakeColorInput" type="color" value="#009600" style="height:20px">
-                    <br>
-                    Search Engine: <select value="Google" id="searchEngineSelect">
-                        <option>Google</option>
-                        <option>Bing</option>
-                        <option>Yahoo!</option>
-                        <option>DuckDuckGo</option>
-                    </select>
+                    <div class="option">
+                        <label for="snakeColorInput">Color: </label><input id="snakeColorInput" type="color" value="#009600" style="height:20px">
+                    </div>
 
-                    <br><br>
+                    <div class="option">
+                        <label for="searchEngineSelect">Search Engine: </label><select value="Google" id="searchEngineSelect">
+                            <option>Google</option>
+                            <option>Bing</option>
+                            <option>Yahoo!</option>
+                            <option>DuckDuckGo</option>
+                        </select>
+                    </div>
+
+                    
                     <button id="changeSettings">Save Settings</button> <button id="resetSettings">Clear ALL data (including shortcuts)</button>
 
-                    <br><br>
-                    <h2>Sources</h2>
-                    <ul>
-                        <li>Snake AI: <a target="_blank" href="https://thebigcb.com">Code Bullet</a></li>
-                        <li>Plus Symbol: <a target="_blank" href="https://commons.wikimedia.org/wiki/File:Plus_symbol.svg">F l a n k e r</a>, Public domain, via Wikimedia Commons</li>
-                        <li>Settings Icon: <a target="_blank" href="https://commons.wikimedia.org/wiki/File:Settings-icon-symbol-vector.png">Sainknight</a>, <a target="_blank"  href="https://creativecommons.org/licenses/by-sa/4.0">CC BY-SA 4.0</a>, via Wikimedia Commons</li>
-                        <li>CSS Reset: <a target="_blank" href="https://meyerweb.com/eric/tools/css/reset/">Eric A. Meyer</a>, Public domain</li>
-                    </ul>
+                    <div class="sources">
+                        <h3>Sources</h3>
+                        <ul>
+                            <li>Snake AI: <a target="_blank" href="https://thebigcb.com">Code Bullet</a></li>
+                            <li>Plus Symbol: <a target="_blank" href="https://commons.wikimedia.org/wiki/File:Plus_symbol.svg">F l a n k e r</a>, Public domain, via Wikimedia Commons</li>
+                            <li>Settings Icon: <a target="_blank" href="https://commons.wikimedia.org/wiki/File:Settings-icon-symbol-vector.png">Sainknight</a>, <a target="_blank"  href="https://creativecommons.org/licenses/by-sa/4.0">CC BY-SA 4.0</a>, via Wikimedia Commons</li>
+                            <li>CSS Reset: <a target="_blank" href="https://meyerweb.com/eric/tools/css/reset/">Eric A. Meyer</a>, Public domain</li>
+                        </ul>
+                    </div>
                 </div>
 
                 <!-- Create a shortcut options menu -->
                 <div id="shortcutCreate" class="menu">
-                    <h2>Create a Shortcut</h2>
-                    <br>
+                    <h3>Create a Shortcut</h3>
                     <label for="addShortcutName">Name</label>
                     <br>
                     <input id="addShortcutName" type="text" style="width: 270px">
