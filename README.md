@@ -10,24 +10,26 @@ You will soon be able to install the extension through the `Firefox Web Store`
 <i>Currently Unavailable</i>
 
 ## Todo
-* [ ] Re-create the extension (cause it was bad before) 
+* [X] Re-create the extension from the ground up
 * [ ] Shortcuts
-    * [X] Add a menu when creating the shortcut
     * [ ] Add drag and drop to sort shortcut order
-    * [ ] Add the ability to change shortcut options (icon, name, delete, url)
+    * [ ] Add the ability to change shortcut options (icon, name, url or the ability to delete)
+        * [X] Name and URL
+    * [X] Add a menu when creating the shortcut
     * [X] Make it so shortcuts sync on different pages
     * [X] Save order change
     * [X] Add shortcut base functionality
 * [ ] Add options menu
+    * [ ] Customizable colors (background, shortcuts, etc)
     * [ ] Search engine
         * [X] Preset search engines
         * [ ] Add the ability to have a custom search engine
     * [X] Snake color
     * [X] Make it so settings sync on different pages
-    * [ ] Customizable colors (background, shortcuts, etc)
 * [ ] Code cleanliness
     * [ ] Divide code into different files/sections to avoid making it hard to read
     * [ ] Add comments to code
+    * [X] Update p5 module to newest version
 
 * [ ] Save website icons for offline use
 * [ ] Get a new icon for the extension

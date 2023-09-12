@@ -32,7 +32,7 @@
                     </div>
 
                     
-                    <button id="changeSettings">Save Settings</button> <button id="resetSettings">Clear ALL data (including shortcuts)</button>
+                    <button id="changeSettings">Save Settings</button> <button id="resetSettings">Reset Settings to Default</button>
 
                     <div class="sources">
                         <h3>Sources</h3>
@@ -55,7 +55,7 @@
                     
                     <label for="addShortcutURL">URL</label>
                     <br>
-                    <input id="addShortcutURL" type="text" style="width: 270px" value="http://">
+                    <input id="addShortcutURL" type="text" style="width: 270px" value="https://">
                     <br><br>
 
                     <!--
@@ -64,7 +64,7 @@
                     -->
                     <br><br><br>
                     
-                    <div class="addShortcutMenuButtons">
+                    <div class="menuButtonsBottom">
                         <button id="cancelShortcut">Cancel</button>
                         <button id="createShortcut">Done</button>
                     </div>
@@ -72,7 +72,22 @@
 
                 <!-- Edit a shortcut menu -->
                 <div id="shortcutEdit" class="menu">
+                    <h3>Edit a shortcut</h3>
+                    <label for="editShortcutName">Name</label>
+                    <br>
+                    <input id="editShortcutName" type="text" style="width: 270px">
+                    <br><br>
                     
+                    <label for="editShortcutURL">URL</label>
+                    <br>
+                    <input id="editShortcutURL" type="text" style="width: 270px" value="https://">
+                    <br><br>
+
+                    <div class="menuButtonsBottom">
+                        <button id="deleteShortcut">Delete</button>
+                        <button id="closeShortcutEdit">Close</button>
+                        <button id="saveShortcutEdit">Save</button>
+                    </div>
                 </div>
 
                 <!-- Search bar -->

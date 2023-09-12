@@ -9,9 +9,15 @@ const searchEngineNameToURL = {
     "duckduckgo": "duckduckgo.com"
 };
 
+let searchBoxInput = document.getElementById("searchBoxInput");
+
 let snakeColorInput = document.getElementById("snakeColorInput");
 let searchEngineSelect = document.getElementById("searchEngineSelect");
-let searchBoxInput = document.getElementById("searchBoxInput");
+
+let shortcutEditMenu = document.getElementById("shortcutEdit");
+let shortcutCreateMenu = document.getElementById("shortcutCreate");
+
+
 
 chrome.storage.onChanged.addListener((changes, namespace) => {
     if ("lastChangedBy" in changes) {
@@ -23,6 +29,7 @@ chrome.storage.onChanged.addListener((changes, namespace) => {
         for (let [key, { oldValue, newValue }] of Object.entries(changes)) {
 
             if (key == "lastChangedBy") continue;
+            if (newValue == undefined) continue;
             
             // shortcuts were modified on a different page
             if (key == "shortcuts") {
@@ -31,13 +38,13 @@ chrome.storage.onChanged.addListener((changes, namespace) => {
             }
 
             else if (key == "snakeColor") {
-                window.snakeColor = newValue;
+                window.snakeColor = newValue['color'];
                 snakeColorInput.value = rgbToHex(...newValue);
             }
 
             else if (key == "searchEngine") {
-                searchBoxInput.placeholder = "Search " + newValue + " or type a URL";
-                searchBoxInput.parentElement.setAttribute("action", "http://" + searchEngineNameToURL[newValue.toLowerCase()]);
+                searchBoxInput.placeholder = "Search " + newValue['engineName'] + " or type a URL";
+                searchBoxInput.parentElement.setAttribute("action", "http://" + searchEngineNameToURL[newValue['engineName'].toLowerCase()]);
             }
 
             console.log(
@@ -66,43 +73,55 @@ defaultSettings = {
             "icon": "https://t0.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&size=256&url=https://stackoverflow.com"
         }
     ],
-    snakeColor: [0, 150, 0],
-    searchEngine: "Google"
+    snakeColor: { "color": [0, 150, 0] },
+    searchEngine: { "engineName": "Google" }
 };
 
-async function loadSettings() {
-    // await chrome.storage.local.clear();
-    defaultSettingsKeys = Object.values(Object.keys(defaultSettings));
-    currentSettings = await getMultipleDataValues(defaultSettingsKeys);
-    dataToChange = { };
+console.log(3);
+async function loadSettings(retry=true) {
+    console.log(4);
+    try {
+        // await chrome.storage.local.clear();
+        defaultSettingsKeys = Object.values(Object.keys(defaultSettings));
+        currentSettings = await getMultipleDataValues(defaultSettingsKeys);
+        dataToChange = { };
+        
+        console.log(currentSettings);
+        for (var i = 0; i < defaultSettingsKeys.length; i++) {
+            thisSetting = defaultSettingsKeys[i];
+            if (currentSettings[thisSetting] == undefined) {
+                dataToChange[thisSetting] = defaultSettings[thisSetting];
+            }
+        }
+        
+        if (Object.values(Object.keys(dataToChange)).length != 0) {
+            await storeMultipleDataValues(dataToChange);
+        }
+
+        shortcuts = (currentSettings['shortcuts'] != undefined) ? currentSettings['shortcuts'] : defaultSettings['shortcuts'];
+
+        window.snakeColor = (currentSettings['snakeColor'] != undefined) ? currentSettings['snakeColor']['color'] : defaultSettings['snakeColor']['color'];
+        snakeColorInput.value = rgbToHex(...window.snakeColor);
+
+        searchEngine = (currentSettings['searchEngine'] != undefined) ? currentSettings['searchEngine']['engineName'] : defaultSettings['searchEngine']['engineName'];
+        searchEngineSelect.value = searchEngine;
+        searchBoxInput.placeholder = "Search " + searchEngine + " or type a URL";
+        searchBoxInput.parentElement.setAttribute("action", "http://" + searchEngineNameToURL[searchEngine.toLowerCase()]);
+        
+
+        console.log(window.snakeColor);
+        console.log(shortcuts);
+        drawShortcuts();
+        hudReady();
     
-    console.log(currentSettings);
-    for (var i = 0; i < defaultSettingsKeys.length; i++) {
-        thisSetting = defaultSettingsKeys[i];
-        if (currentSettings[thisSetting] == undefined) {
-            dataToChange[thisSetting] = defaultSettings[thisSetting];
+    } catch (e) {
+        console.error(e);
+        if (retry) {
+            await chrome.storage.local.clear().then();
+            console.log(2);
+            await loadSettings(retry=false);
         }
     }
-    
-    if (Object.values(Object.keys(dataToChange)).length != 0) {
-        await storeMultipleDataValues(dataToChange);
-    }
-
-    shortcuts = (currentSettings['shortcuts'] != undefined) ? currentSettings['shortcuts'] : defaultSettings['shortcuts'];
-
-    window.snakeColor = (currentSettings['snakeColor'] != undefined) ? currentSettings['snakeColor'] : defaultSettings['snakeColor'];
-    snakeColorInput.value = rgbToHex(...window.snakeColor);
-
-    searchEngine = (currentSettings['searchEngine'] != undefined) ? currentSettings['searchEngine'] : defaultSettings['searchEngine'];
-    searchEngineSelect.value = searchEngine;
-    searchBoxInput.placeholder = "Search " + searchEngine + " or type a URL";
-    searchBoxInput.parentElement.setAttribute("action", "http://" + searchEngineNameToURL[searchEngine.toLowerCase()]);
-    
-
-    console.log(window.snakeColor);
-    console.log(shortcuts);
-    drawShortcuts();
-    hudReady();
 } 
 
 function hudReady() {
@@ -130,8 +149,31 @@ function drawShortcuts() {
         titleElement.classList.add("title");
         shortcutElement.appendChild(titleElement);
 
+        shortcutOptionButton = document.createElement("img");
+        shortcutOptionButton.src = "images/Settings-icon-symbol-vector.png";
+        shortcutOptionButton.classList.add("shortcutOptionButton");
+
+        shortcutOptionButton.addEventListener("click", (e) => {
+            e.preventDefault();
+            shortcutIndex = parseInt(e.target.parentElement.getAttribute("shortcutindex"))
+
+            shortcutEditMenu.classList.add("active");
+            shortcutEditMenu.setAttribute("activeindex", shortcutIndex);
+            setSnakePaused(true);
+            
+
+            shortcutInfo = shortcuts[shortcutIndex];
+
+            document.getElementById("editShortcutName").value = shortcutInfo['title'];
+            document.getElementById("editShortcutURL").value = shortcutInfo['url'];
+        });
+
+        shortcutElement.appendChild(shortcutOptionButton);
+
+
         iconElement = document.createElement("img");
         iconElement.src = shortcut.icon;
+        iconElement.classList.add("shortcutIcon")
         iconElement.setAttribute("draggable", false);
         shortcutElement.appendChild(iconElement);
     
@@ -179,8 +221,6 @@ function drawShortcuts() {
     iconElement.src = "images/Plus_symbol.svg";
 
     addShortcutElement.addEventListener("click", async () => {
-        shortcutCreateMenu = document.getElementById("shortcutCreate");
-
         shortcutCreateMenu.classList.add("active");
         setSnakePaused(true);
     });
@@ -188,8 +228,6 @@ function drawShortcuts() {
     addShortcutElement.appendChild(iconElement);
     shortcutMenu.appendChild(addShortcutElement)
 }
-
-loadSettings();
 
 settingsButton = document.getElementById("settingsIcon");
 settingsMenu = document.getElementById("options");
@@ -205,7 +243,10 @@ settingsButton.addEventListener("click", () => {
 
 // prob just reset settings and not shortcuts
 document.getElementById("resetSettings").addEventListener("click", async () => {
-    browser.storage.local.clear();
+    if (!confirm("Are you sure you would like to reset settings to default?")) return;
+
+    await storeMultipleDataValues(defaultSettings);
+    // browser.storage.local.clear();
     await loadSettings();
 });
 
@@ -216,7 +257,7 @@ document.getElementById("createShortcut").addEventListener("click", async () => 
 
     shortcutURLInput = document.getElementById("addShortcutURL");
     shortcutURL = shortcutURLInput.value;
-    shortcutURLInput.value = "http://";
+    shortcutURLInput.value = "https://";
 
     shortcutNameInput = document.getElementById("addShortcutName");
     shortcutName = shortcutNameInput.value;
@@ -237,7 +278,7 @@ document.getElementById("createShortcut").addEventListener("click", async () => 
 
 document.getElementById("cancelShortcut").addEventListener("click", () => {
     setSnakePaused(false);
-    document.getElementById("addShortcutURL").value = "http://";
+    document.getElementById("addShortcutURL").value = "https://";
     document.getElementById("addShortcutName").value = "";
     document.getElementById("shortcutCreate").classList.remove("active");
 });
@@ -258,7 +299,45 @@ document.getElementById("changeSettings").addEventListener("click", async (e) =>
     console.log(snakeColor, searchEngine);
 
     await storeMultipleDataValues({
-        "snakeColor": snakeColor,
-        "searchEngine": searchEngine
+        "snakeColor": { "color": snakeColor},
+        "searchEngine": { "engineName": searchEngine }
     });
 });
+
+document.getElementById("saveShortcutEdit").addEventListener("click", async () => {
+    setSnakePaused(false);
+    shortcutIndex = parseInt(shortcutEditMenu.getAttribute("activeindex"));
+
+    newURL = document.getElementById("editShortcutURL").value;
+    newTitle = document.getElementById("editShortcutName").value;
+    newIconURL = "https://t0.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&size=256&url=" + newURL;
+
+    shortcuts[shortcutIndex] = {
+        'title': newTitle,
+        'url': newURL,
+        'icon': newIconURL
+    }
+
+    await storeData("shortcuts", shortcuts);
+    drawShortcuts();
+    shortcutEditMenu.classList.remove("active");
+});
+
+document.getElementById("closeShortcutEdit").addEventListener("click", () => {
+    setSnakePaused(false);
+    shortcutEditMenu.classList.remove("active");
+})
+
+document.getElementById("deleteShortcut").addEventListener("click", async () => {
+    if (!confirm("Are you sure you would like to delete this shortcut?")) return;
+
+    setSnakePaused(false);
+    shortcutIndex = parseInt(shortcutEditMenu.getAttribute("activeindex"));
+    shortcuts.splice(shortcutIndex, 1);
+
+    await storeData("shortcuts", shortcuts);
+    drawShortcuts();
+    shortcutEditMenu.classList.remove("active");
+});
+
+loadSettings();
