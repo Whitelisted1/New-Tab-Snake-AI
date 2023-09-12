@@ -1,5 +1,5 @@
 # New Tab Snake AI
-Description
+The New Tab Snake AI allows you to change your old, boring, and flat new tab page into a new tab page that plays snake in the background! 
 
 ## Install
 You are able to install this extension through the [Google Web Store](https://chrome.google.com/webstore/detail/new-tab-snake-ai/ngjmagheegdkpejmnmjhpddloimnednh)
@@ -10,6 +10,7 @@ You will soon be able to install the extension through the `Firefox Web Store`
 <i>Currently Unavailable</i>
 
 ## Todo
+* [ ] Re-create the extension (cause it was bad before) 
 * [ ] Shortcuts
     * [X] Add a menu when creating the shortcut
     * [ ] Add drag and drop to sort shortcut order
@@ -19,6 +20,7 @@ You will soon be able to install the extension through the `Firefox Web Store`
     * [X] Add shortcut base functionality
 * [ ] Add options menu
     * [ ] Search engine
+        * [ ] Preset search engines
         * [ ] Add the ability to have a custom search engine
     * [X] Snake color
     * [X] Make it so settings sync on different pages
