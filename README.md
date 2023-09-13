@@ -2,12 +2,11 @@
 The New Tab Snake AI allows you to change your old, boring, and flat new tab page into a new tab page that plays snake in the background! 
 
 ## Install
-You are able to install this extension through the [Google Web Store](https://chrome.google.com/webstore/detail/new-tab-snake-ai/ngjmagheegdkpejmnmjhpddloimnednh)
-
-You will soon be able to install the extension through the `Firefox Web Store`
+You are able to install this extension through the [Google Web Store](https://chrome.google.com/webstore/detail/new-tab-snake-ai/ngjmagheegdkpejmnmjhpddloimnednh) or through the [Firefox Web Store](https://addons.mozilla.org/en-US/firefox/addon/new-tab-snake-ai/) depending on which browser you are using
 
 ## This extension in action
-<i>Currently Unavailable</i>
+<a href="https://www.youtube.com/watch?v=rzRRMAjO9zY" alt="A YouTube video of the extension in use"><img src="https://img.youtube.com/vi/rzRRMAjO9zY/0.jpg" width="240"></a>
+* Please note this video is from an alpha version
 
 ## Todo
 * [X] Re-create the extension from the ground up
