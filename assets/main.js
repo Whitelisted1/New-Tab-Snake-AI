@@ -9,14 +9,17 @@ const searchEngineNameToURL = {
     "duckduckgo": "duckduckgo.com"
 };
 
-let searchBoxInput = document.getElementById("searchBoxInput");
+const searchBoxInput = document.getElementById("searchBoxInput");
 
-let snakeColorInput = document.getElementById("snakeColorInput");
-let searchEngineSelect = document.getElementById("searchEngineSelect");
+const snakeColorInput = document.getElementById("snakeColorInput");
+const searchEngineSelect = document.getElementById("searchEngineSelect");
 
-let shortcutEditMenu = document.getElementById("shortcutEdit");
-let shortcutCreateMenu = document.getElementById("shortcutCreate");
+const shortcutMenu = document.getElementById("shortcuts");
+const shortcutEditMenu = document.getElementById("shortcutEdit");
+const shortcutCreateMenu = document.getElementById("shortcutCreate");
 
+const settingsButton = document.getElementById("settingsIcon");
+const settingsMenu = document.getElementById("options");
 
 
 chrome.storage.onChanged.addListener((changes, namespace) => {
@@ -46,27 +49,12 @@ chrome.storage.onChanged.addListener((changes, namespace) => {
                 searchBoxInput.placeholder = "Search " + newValue['engineName'] + " or type a URL";
                 searchBoxInput.parentElement.setAttribute("action", "http://" + searchEngineNameToURL[newValue['engineName'].toLowerCase()]);
             }
-
-            console.log(
-                `Storage key "${key}" in namespace "${namespace}" changed.`,
-                `Old value was "${oldValue}", new value is "${newValue}".`
-            );
         }
     }
 });
 
 defaultSettings = {
     shortcuts: [
-        {
-            "title": "Discord",
-            "url": "https://discord.com",
-            "icon": "https://t0.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&size=256&url=https://discord.com"
-        },
-        {
-            "title": "Google",
-            "url": "https://google.com",
-            "icon": "https://t0.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&size=256&url=https://google.com"
-        },
         {
             "title": "Stack Overflow",
             "url": "https://stackoverflow.com",
@@ -77,9 +65,7 @@ defaultSettings = {
     searchEngine: { "engineName": "Google" }
 };
 
-console.log(3);
 async function loadSettings(retry=true) {
-    console.log(4);
     try {
         // await chrome.storage.local.clear();
         defaultSettingsKeys = Object.values(Object.keys(defaultSettings));
@@ -117,8 +103,7 @@ async function loadSettings(retry=true) {
     } catch (e) {
         console.error(e);
         if (retry) {
-            await chrome.storage.local.clear().then();
-            console.log(2);
+            await chrome.storage.local.clear();
             await loadSettings(retry=false);
         }
     }
@@ -130,8 +115,6 @@ function hudReady() {
 
 function drawShortcuts() {
     if (shortcuts == undefined) return;
-
-    shortcutMenu = document.getElementById("shortcuts");
     shortcutMenu.innerHTML = "";
 
     for (var i = 0; i < shortcuts.length; i++) {
@@ -229,8 +212,6 @@ function drawShortcuts() {
     shortcutMenu.appendChild(addShortcutElement)
 }
 
-settingsButton = document.getElementById("settingsIcon");
-settingsMenu = document.getElementById("options");
 settingsButton.addEventListener("click", () => {
     if (settingsMenu.classList.contains("active")) {
         settingsMenu.classList.remove("active");
@@ -241,12 +222,13 @@ settingsButton.addEventListener("click", () => {
     }
 });
 
-// prob just reset settings and not shortcuts
 document.getElementById("resetSettings").addEventListener("click", async () => {
-    if (!confirm("Are you sure you would like to reset settings to default?")) return;
+    if (!confirm("Are you sure you would like to reset settings to default (excluding shortcuts)?")) return;
 
-    await storeMultipleDataValues(defaultSettings);
-    // browser.storage.local.clear();
+    withoutShortcutsDefault = { ...defaultSettings };
+    delete withoutShortcutsDefault['shortcuts'];
+    
+    await storeMultipleDataValues(withoutShortcutsDefault);
     await loadSettings();
 });
 
@@ -296,7 +278,6 @@ document.getElementById("changeSettings").addEventListener("click", async (e) =>
     searchBoxInput.parentElement.setAttribute("action", "http://" + searchEngineURL);
 
     window.snakeColor = [...snakeColor];
-    console.log(snakeColor, searchEngine);
 
     await storeMultipleDataValues({
         "snakeColor": { "color": snakeColor},
