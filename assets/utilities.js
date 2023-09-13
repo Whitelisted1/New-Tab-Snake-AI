@@ -23,9 +23,9 @@ async function getData(key){
     }
 }
 
-async function getMultipleDataValues(key){
+async function getMultipleDataValues(keys){
     if (browser.extension != undefined) {
-        return await browser.storage.local.get(key);
+        return await browser.storage.local.get(keys);
     } else {
         // get from cookies
         return {};

@@ -22,7 +22,7 @@ const settingsButton = document.getElementById("settingsIcon");
 const settingsMenu = document.getElementById("options");
 
 
-chrome.storage.onChanged.addListener((changes, namespace) => {
+browser.storage.onChanged.addListener((changes, namespace) => {
     if ("lastChangedBy" in changes) {
         latestChangedSettingsTabID = changes["lastChangedBy"]["newValue"];
     }
@@ -227,7 +227,7 @@ document.getElementById("resetSettings").addEventListener("click", async () => {
 
     withoutShortcutsDefault = { ...defaultSettings };
     delete withoutShortcutsDefault['shortcuts'];
-    
+
     await storeMultipleDataValues(withoutShortcutsDefault);
     await loadSettings();
 });
@@ -317,7 +317,10 @@ document.getElementById("deleteShortcut").addEventListener("click", async () => 
     shortcuts.splice(shortcutIndex, 1);
 
     await storeData("shortcuts", shortcuts);
-    drawShortcuts();
+
+    // use this instead of redrawing all shortcuts
+    document.querySelector('a[shortcutindex="' + shortcutIndex.toString() + '"').remove();
+
     shortcutEditMenu.classList.remove("active");
 });
 
